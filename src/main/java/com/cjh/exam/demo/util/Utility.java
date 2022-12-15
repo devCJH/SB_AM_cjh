@@ -1,7 +1,5 @@
 package com.cjh.exam.demo.util;
 
-import com.cjh.exam.demo.vo.ResultData;
-
 public class Utility {
 
 	public static boolean empty(Object obj) {

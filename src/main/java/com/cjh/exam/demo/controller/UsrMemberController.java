@@ -1,8 +1,5 @@
 package com.cjh.exam.demo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +15,12 @@ import com.cjh.exam.demo.vo.Rq;
 public class UsrMemberController {
 
 	private MemberService memberService;
+	private Rq rq;
 
 	@Autowired
-	public UsrMemberController(MemberService memberService) {
+	public UsrMemberController(MemberService memberService, Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 
 	@RequestMapping("/usr/member/doJoin")
@@ -66,10 +65,8 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
+	public String doLogin(String loginId, String loginPw) {
 
-		Rq rq = (Rq) req.getAttribute("rq");
-		
 		if (rq.getLoginedMemberId() != 0) {
 			return Utility.jsHistoryBack("이미 로그인 되어있습니다");
 		}
@@ -97,10 +94,8 @@ public class UsrMemberController {
 
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
+	public String doLogout() {
 
-		Rq rq = (Rq) req.getAttribute("rq");
-		
 		if (rq.getLoginedMemberId() == 0) {
 			return Utility.jsHistoryBack("로그아웃 상태입니다");
 		}

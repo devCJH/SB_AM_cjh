@@ -32,11 +32,11 @@ public class ArticleService {
 		articleRepository.modifyArticle(id, title, body);
 	}
 
-	public List<Article> getArticles(int boardId, int itemsInAPage, int page) {
+	public List<Article> getArticles(int boardId, String searchKeywordTypeCode, String searchKeyword, int itemsInAPage, int page) {
 		
 		int limitStart = (page - 1) * itemsInAPage;
 		
-		return articleRepository.getArticles(boardId, limitStart, itemsInAPage);
+		return articleRepository.getArticles(boardId, searchKeywordTypeCode, searchKeyword, limitStart, itemsInAPage);
 	}
 
 	public ResultData<Integer> writeArticle(int memberId, int boardId, String title, String body) {
@@ -99,7 +99,7 @@ public class ArticleService {
 		
 	}
 
-	public int getArticlesCount(int boardId) {
-		return articleRepository.getArticlesCount(boardId);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
+		return articleRepository.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
 	}
 }

@@ -39,7 +39,7 @@ public class UsrArticleController {
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public String doWrite(int boardId, String title, String body) {
-		
+
 		if (Utility.empty(title)) {
 			return Utility.jsHistoryBack("제목을 입력해주세요");
 		}
@@ -56,25 +56,27 @@ public class UsrArticleController {
 
 	@RequestMapping("/usr/article/list")
 	public String showList(Model model, @RequestParam(defaultValue = "1") int boardId,
-			@RequestParam(defaultValue = "1") int page) {
+			@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "title") String searchKeywordTypeCode,
+			@RequestParam(defaultValue = "") String searchKeyword) {
 
 		if (page <= 0) {
 			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다", true);
 		}
-		
+
 		Board board = boardService.getBoardById(boardId);
 
 		if (board == null) {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다", true);
 		}
 
-		int articlesCount = articleService.getArticlesCount(boardId);
-		
+		int articlesCount = articleService.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
+
 		int itemsInAPage = 10;
-		
+
 		int pagesCount = (int) Math.ceil((double) articlesCount / itemsInAPage);
-		
-		List<Article> articles = articleService.getArticles(boardId, itemsInAPage, page);
+
+		List<Article> articles = articleService.getArticles(boardId, searchKeywordTypeCode, searchKeyword, itemsInAPage, page);
 
 		model.addAttribute("board", board);
 		model.addAttribute("articles", articles);
@@ -82,6 +84,8 @@ public class UsrArticleController {
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("page", page);
 		model.addAttribute("pagesCount", pagesCount);
+		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+		model.addAttribute("searchKeyword", searchKeyword);
 
 		return "usr/article/list";
 	}

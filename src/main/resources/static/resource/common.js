@@ -1,9 +1,9 @@
-$('select[data-value]').each(function(index, el){
-	const $el = $(el);
+$('select[data-value]').each(function(index, element){
+	const el = $(element);
 	
-	const defaultValue = $el.attr('data-value').trim();
+	const defaultValue = el.attr('data-value').trim();
 	
 	if (defaultValue.length > 0){
-		$el.val(defaultValue);
+		el.val(defaultValue);
 	}
 })

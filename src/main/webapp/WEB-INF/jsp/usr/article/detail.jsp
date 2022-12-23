@@ -64,6 +64,21 @@
 						<td>${article.writerName}</td>
 					</tr>
 					<tr>
+						<th>추천</th>
+						<td>
+							<c:if test="${rq.getLoginedMemberId() == 0 }">
+								<span class="badge">${article.sumReactionPoint}</span>
+							</c:if>
+							<c:if test="${rq.getLoginedMemberId() != 0 }">
+								<button class="btn btn-xs btn-outline">좋아요 👍</button>
+								<span class="badge">좋아요 : ${article.goodReactionPoint}개</span>
+								<br />
+								<button class="btn btn-xs btn-outline">싫어요 👎</button>
+								<span class="badge">싫어요 : ${article.badReactionPoint}개</span>
+							</c:if>
+						</td>
+					</tr>
+					<tr>
 						<th>제목</th>
 						<td>${article.title}</td>
 					</tr>

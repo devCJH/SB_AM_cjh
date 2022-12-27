@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cjh.exam.demo.service.ArticleService;
 import com.cjh.exam.demo.service.BoardService;
+import com.cjh.exam.demo.service.ReplyService;
 import com.cjh.exam.demo.util.Utility;
 import com.cjh.exam.demo.vo.Article;
 import com.cjh.exam.demo.vo.Board;
+import com.cjh.exam.demo.vo.Reply;
 import com.cjh.exam.demo.vo.ResultData;
 import com.cjh.exam.demo.vo.Rq;
 
@@ -22,12 +24,14 @@ public class UsrArticleController {
 
 	private ArticleService articleService;
 	private BoardService boardService;
+	private ReplyService replyService;
 	private Rq rq;
 
 	@Autowired
-	public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public UsrArticleController(ArticleService articleService, BoardService boardService, ReplyService replyService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.replyService = replyService;
 		this.rq = rq;
 	}
 
@@ -146,7 +150,10 @@ public class UsrArticleController {
 
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 
+		List<Reply> replies = replyService.getForPrintReplies("article", id);
+		
 		model.addAttribute("article", article);
+		model.addAttribute("replies", replies);
 
 		return "usr/article/detail";
 	}

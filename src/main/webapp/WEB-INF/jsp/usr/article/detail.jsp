@@ -45,11 +45,11 @@
 	
 	$(function(){
 // 		실전코드
-// 		ArticleDetail__increaseHitCount();
+		ArticleDetail__increaseHitCount();
 		ReactionPoint__getReactionPoint();
 		
 // 		연습코드
-		setTimeout(ArticleDetail__increaseHitCount, 2000);
+// 		setTimeout(ArticleDetail__increaseHitCount, 2000);
 	})
 	
 </script>

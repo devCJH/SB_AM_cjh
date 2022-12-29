@@ -8,18 +8,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.cjh.exam.demo.interceptor.BeforeActionInterceptor;
 import com.cjh.exam.demo.interceptor.NeedLoginInterceptor;
+import com.cjh.exam.demo.interceptor.NeedLogoutInterceptor;
 
 @Configuration
 public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	private BeforeActionInterceptor beforeActionInterceptor;
 	private NeedLoginInterceptor needLoginInterceptor;
+	private NeedLogoutInterceptor needLogoutInterceptor;
 
 	@Autowired
 	public MyWebMvcConfigurer(BeforeActionInterceptor beforeActionInterceptor,
-			NeedLoginInterceptor needLoginInterceptor) {
+			NeedLoginInterceptor needLoginInterceptor, NeedLogoutInterceptor needLogoutInterceptor) {
 		this.beforeActionInterceptor = beforeActionInterceptor;
 		this.needLoginInterceptor = needLoginInterceptor;
+		this.needLogoutInterceptor = needLogoutInterceptor;
 	}
 
 	@Override
@@ -39,9 +42,20 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 		ir.addPathPatterns("/usr/article/doDelete");
 		ir.addPathPatterns("/usr/article/modify");
 		ir.addPathPatterns("/usr/article/doModify");
+		ir.addPathPatterns("/usr/reactionPoint/getReactionPoint");
 		ir.addPathPatterns("/usr/reactionPoint/doReactionPoint");
 		ir.addPathPatterns("/usr/reactionPoint/delReactionPoint");
 		ir.addPathPatterns("/usr/reply/doWrite");
+		ir.addPathPatterns("/usr/reply/doDelete");
+		ir.addPathPatterns("/usr/reply/doModify");
+		ir.addPathPatterns("/usr/reply/getModifyForm");
+		ir.addPathPatterns("/usr/member/doLogout");
+		
+		ir = registry.addInterceptor(needLogoutInterceptor);
+		ir.addPathPatterns("/usr/member/login");
+		ir.addPathPatterns("/usr/member/doLogin");
+		ir.addPathPatterns("/usr/member/join");
+		ir.addPathPatterns("/usr/member/doJoin");
 	}
 
 }

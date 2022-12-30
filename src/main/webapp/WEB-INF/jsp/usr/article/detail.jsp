@@ -138,29 +138,19 @@
 	originalForm = null;
 	originalId = null;
 	
-	function ReplyModify__cancel(i) {
-		let replyContent = $('#' + i);
-		replyContent.html(originalForm);
-		
-		originalForm = null;
-		originalId = null;
-	}
-	
 	function ReplyModify__getForm(replyId, i) {	
 		
 		if(originalForm != null){
 			ReplyModify__cancel(originalId);
 		}
 		
-		$.get('../reply/getModifyForm', {
+		$.get('../reply/getReplyContent', {
 			id : replyId,
 			ajaxMode : 'Y'
 		}, function(data){
 			let replyContent = $('#' + i);
 			originalId = i;
 			originalForm = replyContent.html();
-			
-			let modifyForm = $('#' + i);
 			
 			let addHtml = `
 				<form action="../reply/doModify" method="POST" onsubmit="ReplyWrite__submitForm(this); return false;">
@@ -175,11 +165,18 @@
 					</div>
 				</form>`;
 				
-			modifyForm.empty().html("");
-			modifyForm.append(addHtml);
+			replyContent.empty().html("");
+			replyContent.append(addHtml);
 			
 		}, 'json');
+	}
+	
+	function ReplyModify__cancel(i) {
+		let replyContent = $('#' + i);
+		replyContent.html(originalForm);
 		
+		originalForm = null;
+		originalId = null;
 	}
 </script>
 

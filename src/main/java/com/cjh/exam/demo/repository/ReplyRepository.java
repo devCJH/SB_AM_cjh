@@ -68,5 +68,5 @@ public interface ReplyRepository {
 				ON R.memberId = M.id
 				WHERE R.id = #{id}
 			""")
-	Reply getForPrintReply(int id);
+	Reply getReplyContent(int id);
 }

@@ -119,7 +119,9 @@ public class UsrMemberController {
 			return rq.jsReturnOnView("비밀번호가 일치하지 않습니다", true);
 		}
 		
-		return "usr/member/modify";
+		String memberModifyAuthKey = memberService.genMemberModifyAuthKey(rq.getLoginedMemberId());
+		
+		return "usr/member/modify?memberModifyAuthKey=" + memberModifyAuthKey;
 	}
 	
 	@RequestMapping("/usr/member/doModify")

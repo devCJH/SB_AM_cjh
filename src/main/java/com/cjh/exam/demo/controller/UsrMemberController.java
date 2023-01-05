@@ -99,7 +99,7 @@ public class UsrMemberController {
 		if (member == null) {
 			return Utility.jsHistoryBack("존재하지 않는 아이디입니다");
 		}
-
+		
 		if (member.getLoginPw().equals(loginPw) == false) {
 			return Utility.jsHistoryBack("비밀번호가 일치하지 않습니다");
 		}

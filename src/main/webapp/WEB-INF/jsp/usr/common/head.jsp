@@ -49,4 +49,3 @@
 			<h1>${pageTitle}&nbsp;PAGE</h1>
 		</div>
 	</section>
-	<main>

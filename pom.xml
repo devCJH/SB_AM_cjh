@@ -58,7 +58,7 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- JSP 엔진 -->
+			<!-- JSP 엔진 -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
@@ -70,8 +70,6 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>

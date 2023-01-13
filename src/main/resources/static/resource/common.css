@@ -142,8 +142,9 @@ body {
 	opacity: .75;
 }
 
-
-
+.rounded-circle {
+	border-radius: 50%;
+}
 
 
 

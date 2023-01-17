@@ -1,21 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="pageTitle" value="${board.name } 게시판" />
-<%@ include file="../common/head.jsp"%>
+<c:set var="pageTitle" value="ADMIN PAGE - MEMBER LIST" />
+<%@ include file="../../usr/common/head.jsp"%>
 
 <section class="mt-8 text-xl">
 	<div class="container mx-auto px-3">
 		<div class="mb-2 flex justify-between items-center">
 			<div>
-				<span>${articlesCount } 개</span>
+				<span>회원수 : ${membersCount }</span>
 			</div>
 			<form>
-				<input type="hidden" name="boardId" value="${boardId }" />
+				<select data-value="${authLevel }" class="select select-bordered" name="authLevel">
+					<option value="0">전체</option>
+					<option value="3">일반</option>
+					<option value="7">관리자</option>
+				</select>
 				
 				<select data-value="${searchKeywordTypeCode }" class="select select-bordered" name="searchKeywordTypeCode">
-					<option value="title">제목</option>
-					<option value="body">내용</option>
-					<option value="title,body">제목 + 내용</option>
+					<option value="loginId,name,nickname">전체</option>
+					<option value="loginId">아이디</option>
+					<option value="name">이름</option>
+					<option value="nickname">닉네임</option>
 				</select>
 				
 				<input class="ml-2 w-84 input input-bordered" type="text" name="searchKeyword" placeholder="검색어를 입력해주세요" maxlength="20" value="${searchKeyword }" />
@@ -24,40 +29,32 @@
 			</form>
 		</div>
 		<c:choose>
-			<c:when test="${articlesCount == 0 }">
-				<div class="text-center mt-4">조건에 일치하는 검색결과가 없습니다</div>
+			<c:when test="${membersCount == 0}">
+				<div class="text-center py-2">조건에 일치하는 검색결과가 없습니다</div>
 			</c:when>
 			<c:otherwise>
 				<div class="table-box-type-1">
 					<table class="table w-full">
-						<colgroup>
-							<col width="60" />
-							<col width="200" />
-							<col />
-							<col width="120" />
-							<col width="50" />
-							<col width="50" />
-						</colgroup>
 						<thead>
 							<tr>
 								<th>번호</th>
-								<th>날짜</th>
-								<th>제목</th>
-								<th>작성자</th>
-								<th>조회수</th>
-								<th>추천</th>
+								<th>가입날짜</th>
+								<th>수정날짜</th>
+								<th>아이디</th>
+								<th>이름</th>
+								<th>닉네임</th>
 							</tr>
 						</thead>
 		
 						<tbody>
-							<c:forEach var="article" items="${articles}">
+							<c:forEach var="member" items="${members}">
 								<tr class="hover">
-									<td>${article.id}</td>
-									<td>${article.regDate.substring(2,16)}</td>
-									<td><a class="hover:underline" href="detail?id=${article.id}">${article.title}</a></td>
-									<td>${article.writerName}</td>
-									<td>${article.hitCount}</td>
-									<td>${article.sumReactionPoint}</td>
+									<td>${member.id}</td>
+									<td>${member.regDate.substring(2,16)}</td>
+									<td>${member.updateDate.substring(2,16)}</td>
+									<td>${member.loginId}</td>
+									<td>${member.name}</td>
+									<td>${member.nickname}</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -65,19 +62,20 @@
 				</div>
 			</c:otherwise>
 		</c:choose>
-		<div class="mt-2 flex justify-end">
-			<c:if test="${rq.getLoginedMemberId() != 0 }">
-				<a class="btn-text-link btn btn-active btn-ghost" href="/usr/article/write">WRITE</a>
-			</c:if>
-		</div>
+<!-- 		<div class="mt-2 flex justify-end"> -->
+<%-- 			<c:if test="${rq.getLoginedMemberId() != 0 }"> --%>
+<!-- 				<a class="btn-text-link btn btn-active btn-ghost" href="/usr/article/write">WRITE</a> -->
+<%-- 			</c:if> --%>
+<!-- 		</div> -->
 		<div class="page-menu mt-2 flex justify-center">
 			<div class="btn-group">
 				<c:set var="pageMenuLen" value="5" />
 				<c:set var="startPage" value="${page - pageMenuLen >= 1 ? page - pageMenuLen : 1}" />
 				<c:set var="endPage" value="${page + pageMenuLen <= pagesCount ? page + pageMenuLen : pagesCount}" />
 				
-				<c:set var="pageBaseUri" value="?boardId=${boardId }&searchKeywordTypeCode=${searchKeywordTypeCode }&searchKeyword=${searchKeyword }" />
-				<c:if test="${articlesCount != 0 }">
+				<c:set var="pageBaseUri" value="?searchKeywordTypeCode=${searchKeywordTypeCode }&searchKeyword=${searchKeyword }" />
+
+				<c:if test="${membersCount != 0 }">
 					<c:if test="${page == 1 }">
 						<a class="btn btn-sm btn-disabled">«</a>
 						<a class="btn btn-sm btn-disabled">&lt;</a>
@@ -102,4 +100,4 @@
 		</div>
 	</div>
 </section>
-<%@ include file="../common/foot.jsp"%>
+<%@ include file="../../usr/common/foot.jsp"%>

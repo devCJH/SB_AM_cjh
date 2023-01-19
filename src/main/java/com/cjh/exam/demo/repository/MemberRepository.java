@@ -144,4 +144,17 @@ public interface MemberRepository {
 			""")
 	public List<Member> getMembers(String authLevel, String searchKeywordTypeCode, String searchKeyword, int limitStart,
 			int itemsInAPage);
+
+	@Update("""
+			<script>
+				UPDATE `member`
+					<set>
+						updateDate = NOW(),
+						delStatus = 1,
+						delDate = NOW()
+					</set>
+					WHERE id = #{id}
+			</script>
+			""")
+	public void deleteMember(int id);
 }

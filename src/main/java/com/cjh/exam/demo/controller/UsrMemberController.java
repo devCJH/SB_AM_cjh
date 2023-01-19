@@ -125,6 +125,10 @@ public class UsrMemberController {
 			return Utility.jsHistoryBack("비밀번호가 일치하지 않습니다");
 		}
 
+		if (member.isDelStatus() == true) {
+			return Utility.jsHistoryBack("사용할 수 없는 계정입니다");
+		}
+		
 		rq.login(member);
 
 		return Utility.jsReplace(Utility.f("%s님 환영합니다", member.getNickname()), "/");

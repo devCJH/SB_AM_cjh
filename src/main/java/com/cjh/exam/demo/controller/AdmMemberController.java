@@ -1,5 +1,6 @@
 package com.cjh.exam.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cjh.exam.demo.service.MemberService;
+import com.cjh.exam.demo.util.Utility;
 import com.cjh.exam.demo.vo.Member;
 import com.cjh.exam.demo.vo.Rq;
 
@@ -29,7 +32,7 @@ public class AdmMemberController {
 			@RequestParam(defaultValue = "loginId,name,nickname") String searchKeywordTypeCode,
 			@RequestParam(defaultValue = "") String searchKeyword, @RequestParam(defaultValue = "1") int page) {
 
-		int membersCount = memberService.getMembersCount(authLevel, searchKeywordTypeCode, searchKeyword);
+		int membersCount = memberService.getMembersCount(authLevel, searchKeywordTypeCode, searchKeyword) - 1;
 		
 		if (page <= 0) {
 			return rq.jsReturnOnView("페이지번호가 올바르지 않습니다", true);
@@ -50,5 +53,28 @@ public class AdmMemberController {
 		model.addAttribute("pagesCount", pagesCount);
 
 		return "adm/member/list";
+	}
+	
+	@RequestMapping("/adm/member/doDeleteMembers")
+	@ResponseBody
+	public String doDeleteMembers(@RequestParam(defaultValue = "") String ids) {
+		
+		if (Utility.empty(ids)) {
+			return Utility.jsHistoryBack("선택한 회원이 없습니다");
+		}
+		
+		if (ids.equals("1")) {
+			return Utility.jsHistoryBack("관리자 계정은 삭제할 수 없습니다");
+		}
+		
+		List<Integer> memberIds = new ArrayList<>();
+		
+		for (String idStr : ids.split(",")) {
+			memberIds.add(Integer.parseInt(idStr));
+		}
+		
+		memberService.deleteMembers(memberIds);
+		
+		return Utility.jsReplace("선택한 회원이 삭제되었습니다", "list");
 	}
 }
